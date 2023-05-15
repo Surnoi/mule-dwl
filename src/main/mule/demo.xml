@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
-	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
-http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
-	<flow name="demoFlow" doc:id="585f430a-1223-447c-a7b3-3cae9236cc11" >
-		<http:listener doc:name="Listener" doc:id="513a94b3-2baa-4153-ad79-f8c10d2d6965" />
-		<logger level="INFO" doc:name="Logger" doc:id="63056fef-33ca-4f75-b40f-5cd2d55cc1bf" />
-		
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="fb73b001-f16e-4fd4-bb8d-6f303aad20da" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="dwl-modulesFlow" doc:id="de45e014-0d9f-4948-bffb-39d365b4fbcf" >
+		<http:listener doc:name="Listener" doc:id="2c0d7912-2c3c-4c7a-952c-f5e250fe5224" config-ref="HTTP_Listener_config" path="/modules"/>
+		<ee:transform doc:name="Transform Message" doc:id="273da3d7-6032-43ed-955f-a73535328d00" >
+			<ee:message >
+				<ee:set-payload resource="abc.dwl" />
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="7d335159-ce33-4922-8a10-c1d5c5af2456" message="#[payload]"/>
 	</flow>
-	<flow name="demoFlow1" doc:id="d0746178-21b1-4241-9ae1-40d8e63e65c7" />
-	<sub-flow name="demoSub_Flow" doc:id="49e74c11-1a2a-4b64-8fc2-0e4c55702345" />
 </mule>
